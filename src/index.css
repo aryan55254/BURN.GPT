@@ -1,0 +1,9 @@
+@import "tailwindcss";
+/* App.css */
+.merienda-font {
+    font-family: 'Merienda', cursive;
+  }
+  
+  .roboto-font {
+    font-family: 'Roboto', sans-serif;
+  }
