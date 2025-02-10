@@ -16,21 +16,43 @@ function StopWatch() {
         setrun(false);
     }
     useEffect(() => { 
-        if (run) {const timer = setInterval (
+        if (run) {const second = setInterval (
             ()=>{
                 setsec(prev => prev === 59 ? 0 : prev + 1)
             },1000
         );
         return() => {
-            clearInterval(timer);
+            clearInterval(second);
+        }}
+    },[run]);
+    useEffect(() => { 
+        if (run) {const minute = setInterval (
+            ()=>{
+                setmin(prev => prev === 59 ? 0 : prev + 1)
+            },60000
+        );
+        return() => {
+            clearInterval(minute);
+        }}
+    },[run]);
+    useEffect(() => { 
+        if (run) {const ghanta = setInterval (
+            ()=>{
+                sethour(prev => prev + 1)
+            },3600000
+        );
+        return() => {
+            clearInterval(ghanta);
         }}
     },[run]);
   return (
     <div className='bg-indigo-100 h-screen font-iceberg'>
-        <div className='text-6xl text-center items-center pt-60'> {hour}:{min}:{sec}</div>
-        <div className='mt-10  flex justify-between'>
-            <div><button onClick={handletoggle} className='ml-25  text-3xl'>{run ? "Pause" : "Start"}</button></div>
-            <div><button onClick={handleclear}  className='mr-25 text-3xl'>Clear</button></div>
+        <h1 className='text-center text-6xl pt-10 lg:text-8xl'>STOPWATCH</h1>
+        <div className='text-8xl text-center items-center pt-30 lg:pt-30 lg:text-9xl'> {hour}:{min}:{sec}</div>
+        <div className='text-xl text-center items-center pt-6'> Hour:Min:Sec</div>
+        <div className='mt-10  flex justify-items-center lg:ml-62'>
+            <div><button onClick={handletoggle} className='hover:bg-indigo-300 hover:scale-105 cursor-pointer border border-r-2 rounded-md p-2 ml-25 mr-2  text-3xl lg:ml-96 lg:text-5xl'>{run ? "Pause" : "Start"}</button></div>
+            <div><button onClick={handleclear}  className='hover:bg-indigo-300 hover:scale-105 cursor-pointer border border-r-2 rounded-md p-2 mr-25 ml-2 text-3xl lg:  lg:text-5xl'>Clear</button></div>
         </div>
     </div>
   )
