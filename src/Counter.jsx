@@ -6,7 +6,12 @@ function Counter() {
   const [sec, setsec] = useState(0);
   const [min, setmin] = useState(0);
   const [hour, sethour] = useState(0);
-
+   const handlecleanup = () => {
+    setsetting(prev => !prev);
+    setsec(0);
+    setmin(0);
+    sethour(0);
+   };
   const handleclick = () => {
     setsetting(prev => !prev);
   };
@@ -57,24 +62,73 @@ function Counter() {
   }, [issetting, hour, min, sec]);
 
   return (
-    issetting ? (<>
-      <div >
-        {hour}:{min}:{sec}
-        <button className='bg-amber-100 text-black' onClick={handleclick}>CHANGE</button>
+    issetting ? (<div className="min-h-screen bg-indigo-100 font-iceberg flex flex-col items-center justify-center px-4">
+      <h1 className="text-5xl sm:text-6xl lg:text-8xl text-center pt-10">
+        TIMER
+      </h1>
+      <div className="text-7xl sm:text-8xl lg:text-9xl text-center mt-6">
+        {String(hour).padStart(2, '0')}:{String(min).padStart(2, '0')}:{String(sec).padStart(2, '0')}
       </div>
-    </>) : (
-      <>
-        <div className='bg-indigo-100 h-screen font-iceberg'>
-          <div>
-            <input type='number' min="0" placeholder='hours' value={hour} onChange={handlehour} />
-            <input type='number' min="0" max="60" placeholder='minutes' value={min} onChange={handlemin} />
-            <input type='number' min="0" max="60" placeholder='seconds' value={sec} onChange={handlesc} />
-          </div>
-          <div>
-            <button onClick={handleclick} className='text-black'>CHANGE</button>
-          </div>
+      <div className="text-base sm:text-2xl text-center mt-4">
+        Hour:Min:Sec
+      </div>
+      <button 
+        onClick={handleclick}
+        className="text-2xl sm:text-4xl lg:text-5xl hover:bg-indigo-300 hover:scale-105 cursor-pointer border border-r-2 rounded-md p-2 transition-all mt-8"
+      >
+        CHANGE
+      </button>
+    </div>) : (
+      <div className="min-h-screen bg-indigo-100 font-iceberg flex flex-col items-center justify-center px-4">
+      <h1 className="text-5xl sm:text-6xl lg:text-8xl text-center pt-10">
+        TIMER
+      </h1>
+      <div className="flex gap-4 sm:gap-6 lg:gap-8 mt-6">
+        <div className="relative">
+          <input
+            type="number"
+            min="0"
+            placeholder="00"
+            value={hour || ''}
+            onChange={handlehour}
+            className="w-24 sm:w-32 lg:w-40 py-4 text-5xl sm:text-6xl lg:text-7xl text-center bg-transparent focus:outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+          />
+          <span className="absolute right-[-8px] top-1/2 -translate-y-1/2 text-5xl sm:text-6xl lg:text-7xl">:</span>
         </div>
-      </>
+        <div className="relative">
+          <input
+            type="number"
+            min="0"
+            max="60"
+            placeholder="00"
+            value={min || ''}
+            onChange={handlemin}
+            className="w-24 sm:w-32 lg:w-40 py-4 text-5xl sm:text-6xl lg:text-7xl text-center bg-transparent focus:outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+          />
+          <span className="absolute right-[-8px] top-1/2 -translate-y-1/2 text-5xl sm:text-6xl lg:text-7xl">:</span>
+        </div>
+        <input
+          type="number"
+          min="0"
+          max="60"
+          placeholder="00"
+          value={sec || ''}
+          onChange={handlesc}
+          className="w-24 sm:w-32 lg:w-40 py-4 text-5xl sm:text-6xl lg:text-7xl text-center bg-transparent focus:outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+        />
+      </div>
+      <div className="flex gap-4 sm:gap-6 lg:gap-8 text-sm sm:text-base lg:text-lg text-center mt-2">
+        <span className="w-24 sm:w-32 lg:w-40">HOURS</span>
+        <span className="w-24 sm:w-32 lg:w-40">MINUTES</span>
+        <span className="w-24 sm:w-32 lg:w-40">SECONDS</span>
+      </div>
+      <button
+        onClick={handleclick}
+        className="text-2xl sm:text-4xl lg:text-5xl hover:bg-indigo-300 hover:scale-105 cursor-pointer border border-r-2 rounded-md p-2 transition-all mt-8"
+      >
+        START
+      </button>
+    </div>
     )
   )
 }
