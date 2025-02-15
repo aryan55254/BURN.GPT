@@ -6,6 +6,6 @@ import StopWatch from './StopWatch'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <Counter />
+    <StopWatch />
   </StrictMode>,
 )
