@@ -1,34 +1,36 @@
-import React, { useEffect, useState } from 'react'
-import "./App.css"
+import React, { useEffect, useState } from 'react';
+import { Timer, Play, Settings, RotateCcw } from 'lucide-react';
 
 function Counter() {
-  const [issetting, setsetting] = useState(false);
-  const [sec, setsec] = useState(0);
-  const [min, setmin] = useState(0);
-  const [hour, sethour] = useState(0);
-   const handlecleanup = () => {
-    setsetting(prev => !prev);
-    setsec(0);
-    setmin(0);
-    sethour(0);
-   };
-  const handleclick = () => {
-    setsetting(prev => !prev);
+  const [issetting, setSetting] = useState(false);
+  const [sec, setSec] = useState(0);
+  const [min, setMin] = useState(0);
+  const [hour, setHour] = useState(0);
+
+  const handleCleanup = () => {
+    setSetting(prev => !prev);
+    setSec(0);
+    setMin(0);
+    setHour(0);
   };
 
-  const handlehour = (e) => {
-    const value = Math.max(0, parseInt(e.target.value) || 0)
-    sethour(value);
+  const handleClick = () => {
+    setSetting(prev => !prev);
   };
 
-  const handlemin = (e) => {
+  const handleHour = (e) => {
+    const value = Math.max(0, parseInt(e.target.value) || 0);
+    setHour(value);
+  };
+
+  const handleMin = (e) => {
     const value2 = Math.min(59, Math.max(0, parseInt(e.target.value) || 0));
-    setmin(value2);
+    setMin(value2);
   };
 
-  const handlesc = (e) => {
+  const handleSec = (e) => {
     const value3 = Math.min(59, Math.max(0, parseInt(e.target.value) || 0));
-    setsec(value3);
+    setSec(value3);
   };
 
   useEffect(() => {
@@ -36,20 +38,20 @@ function Counter() {
     
     if (issetting) {
       if (hour === 0 && min === 0 && sec === 0) {
-        setsetting(false);
+        setSetting(false);
         return;
       }
       
       intervalId = setInterval(() => {
         if (sec > 0) {
-          setsec(prev => prev - 1);
+          setSec(prev => prev - 1);
         } else if (min > 0) {
-          setmin(prev => prev - 1);
-          setsec(59);
+          setMin(prev => prev - 1);
+          setSec(59);
         } else if (hour > 0) {
-          sethour(prev => prev - 1);
-          setmin(59);
-          setsec(59);
+          setHour(prev => prev - 1);
+          setMin(59);
+          setSec(59);
         }
       }, 1000);
     }
@@ -62,75 +64,105 @@ function Counter() {
   }, [issetting, hour, min, sec]);
 
   return (
-    issetting ? (<div className="min-h-screen bg-indigo-100 font-iceberg flex flex-col items-center justify-center px-4">
-      <h1 className="text-5xl sm:text-6xl lg:text-8xl text-center pt-10">
-        TIMER
-      </h1>
-      <div className="text-7xl sm:text-8xl lg:text-9xl text-center mt-6">
-        {String(hour).padStart(2, '0')}:{String(min).padStart(2, '0')}:{String(sec).padStart(2, '0')}
-      </div>
-      <div className="text-base sm:text-2xl text-center mt-4">
-        Hour:Min:Sec
-      </div>
-      <button 
-        onClick={handleclick}
-        className="text-2xl sm:text-4xl lg:text-5xl hover:bg-indigo-300 hover:scale-105 cursor-pointer border border-r-2 rounded-md p-2 transition-all mt-8"
-      >
-        CHANGE
-      </button>
-    </div>) : (
-      <div className="min-h-screen bg-indigo-100 font-iceberg flex flex-col items-center justify-center px-4">
-      <h1 className="text-5xl sm:text-6xl lg:text-8xl text-center pt-10">
-        TIMER
-      </h1>
-      <div className="flex gap-4 sm:gap-6 lg:gap-8 mt-6">
-        <div className="relative">
-          <input
-            type="number"
-            min="0"
-            placeholder="00"
-            value={hour || ''}
-            onChange={handlehour}
-            className="w-24 sm:w-32 lg:w-40 py-4 text-5xl sm:text-6xl lg:text-7xl text-center bg-transparent focus:outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
-          />
-          <span className="absolute right-[-8px] top-1/2 -translate-y-1/2 text-5xl sm:text-6xl lg:text-7xl">:</span>
+    <div className="min-h-screen bg-gray-900 text-gray-100 flex flex-col items-center justify-center px-4">
+      <div className="bg-gray-800 p-8 rounded-2xl shadow-2xl w-full max-w-2xl">
+        <div className="flex items-center justify-center gap-2 mb-8">
+          <Timer className="w-8 h-8 text-purple-400" />
+          <h1 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-500">
+            TIMER
+          </h1>
         </div>
-        <div className="relative">
-          <input
-            type="number"
-            min="0"
-            max="60"
-            placeholder="00"
-            value={min || ''}
-            onChange={handlemin}
-            className="w-24 sm:w-32 lg:w-40 py-4 text-5xl sm:text-6xl lg:text-7xl text-center bg-transparent focus:outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
-          />
-          <span className="absolute right-[-8px] top-1/2 -translate-y-1/2 text-5xl sm:text-6xl lg:text-7xl">:</span>
+
+        <div className="bg-gray-900 rounded-xl p-8 mb-8">
+          {issetting ? (
+            <div className="text-center">
+              <div className="text-6xl md:text-7xl font-mono tracking-wider">
+                <span className="text-purple-400">{String(hour).padStart(2, '0')}</span>
+                <span className="text-gray-500">:</span>
+                <span className="text-pink-400">{String(min).padStart(2, '0')}</span>
+                <span className="text-gray-500">:</span>
+                <span className="text-purple-400">{String(sec).padStart(2, '0')}</span>
+              </div>
+              <div className="text-gray-400 mt-4">
+                Hours : Minutes : Seconds
+              </div>
+            </div>
+          ) : (
+            <div className="space-y-4">
+              <div className="flex justify-center gap-4">
+                <div className="relative">
+                  <input
+                    type="number"
+                    min="0"
+                    placeholder="00"
+                    value={hour || ''}
+                    onChange={handleHour}
+                    className="w-24 py-4 text-5xl text-center bg-gray-800 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 text-purple-400 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                  />
+                  <span className="absolute right-[-16px] top-1/2 -translate-y-1/2 text-5xl text-gray-500">:</span>
+                </div>
+                <div className="relative">
+                  <input
+                    type="number"
+                    min="0"
+                    max="59"
+                    placeholder="00"
+                    value={min || ''}
+                    onChange={handleMin}
+                    className="w-24 py-4 text-5xl text-center bg-gray-800 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 text-pink-400 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                  />
+                  <span className="absolute right-[-16px] top-1/2 -translate-y-1/2 text-5xl text-gray-500">:</span>
+                </div>
+                <input
+                  type="number"
+                  min="0"
+                  max="59"
+                  placeholder="00"
+                  value={sec || ''}
+                  onChange={handleSec}
+                  className="w-24 py-4 text-5xl text-center bg-gray-800 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 text-purple-400 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                />
+              </div>
+              <div className="flex justify-center gap-4 text-sm text-gray-400">
+                <span className="w-24 text-center">HOURS</span>
+                <span className="w-24 text-center">MINUTES</span>
+                <span className="w-24 text-center">SECONDS</span>
+              </div>
+            </div>
+          )}
         </div>
-        <input
-          type="number"
-          min="0"
-          max="60"
-          placeholder="00"
-          value={sec || ''}
-          onChange={handlesc}
-          className="w-24 sm:w-32 lg:w-40 py-4 text-5xl sm:text-6xl lg:text-7xl text-center bg-transparent focus:outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
-        />
+
+        <div className="flex justify-center gap-4">
+          <button
+            onClick={handleClick}
+            className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg text-white font-semibold hover:from-purple-600 hover:to-pink-600 transition-all duration-300 shadow-lg hover:shadow-purple-500/25"
+          >
+            {issetting ? (
+              <>
+                <Settings className="w-5 h-5" />
+                Change
+              </>
+            ) : (
+              <>
+                <Play className="w-5 h-5" />
+                Start
+              </>
+            )}
+          </button>
+          
+          {!issetting && (
+            <button
+              onClick={handleCleanup}
+              className="flex items-center gap-2 px-6 py-3 bg-gray-700 rounded-lg text-white font-semibold hover:bg-gray-600 transition-all duration-300 shadow-lg"
+            >
+              <RotateCcw className="w-5 h-5" />
+              Reset
+            </button>
+          )}
+        </div>
       </div>
-      <div className="flex gap-4 sm:gap-6 lg:gap-8 text-sm sm:text-base lg:text-lg text-center mt-2">
-        <span className="w-24 sm:w-32 lg:w-40">HOURS</span>
-        <span className="w-24 sm:w-32 lg:w-40">MINUTES</span>
-        <span className="w-24 sm:w-32 lg:w-40">SECONDS</span>
-      </div>
-      <button
-        onClick={handleclick}
-        className="text-2xl sm:text-4xl lg:text-5xl hover:bg-indigo-300 hover:scale-105 cursor-pointer border border-r-2 rounded-md p-2 transition-all mt-8"
-      >
-        START
-      </button>
     </div>
-    )
-  )
+  );
 }
 
-export default Counter
+export default Counter;
